@@ -58,6 +58,7 @@ function onBodyLoad()
 	window.addEventListener("keyup", keyUp);
 	
 	//Initial action
+	addMusicButton();
 	summonMenu();
 	
 	//Start update and animation

@@ -69,6 +69,7 @@ function summonMenu()
 	startButton.onClick = () => {
 		for(let i = 0; i < menuElements.length; i++) {
 			const element = menuElements[i];
+			if(element.id == "musicButton") continue;
 			element.onClick = () => {};
 			element.update = () => {
 				element.position[1] += element.position[1] / 140;
@@ -89,7 +90,24 @@ function summonMenu()
 	const sourceCodeButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 320, 65, WIDTH / 2 + 190, HEIGHT / 2 + 130, 160, "blue", "Source Code");
 	menuElements.push(sourceCodeButton);
 	sourceCodeButton.onClick = () => {
-		window.open("https://www.101computing.net/elastic-collision-in-a-pool-game/");
+		window.open("https://github.com/MichaelAlpin/Bouncy-Strike");
+	}
+}
+
+function addMusicButton()
+{
+	const musicButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 200, 65, WIDTH - 130, 70, 160, "blue", "Music On");
+	musicButton.id = "musicButton";
+	musicButton.on = true;
+	musicButton.onClick = () => {
+		if(musicButton.on) {
+			audioSources.music.volume = 0;
+			musicButton.content = "Music Off";
+		} else {
+			audioSources.music.volume = 1;
+			musicButton.content = "Music On";
+		}
+		musicButton.on = !musicButton.on;
 	}
 }
 
@@ -103,12 +121,13 @@ function startGame()
 	player.score = 0;
 	
 	//Menu button
-	const menuButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 130, 65, WIDTH - 115, 70, 160, "blue", "Menu");
+	const menuButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 130, 65, WIDTH - 340, 70, 160, "blue", "Menu");
 	menuButton.id = "menuButton";
 	menuButton.onClick = () => {
 		enemies.splice(0, enemies.length);
 		for(let i = 0; i < elements.length; i++) {
 			const element = elements[i];
+			if(element.id == "musicButton") continue;
 			element.onClick = () => {};
 			element.update = () => {
 				element.position[1] += element.position[1] / 140;
