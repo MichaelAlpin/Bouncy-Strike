@@ -96,16 +96,21 @@ function summonMenu()
 
 function addMusicButton()
 {
-	const musicButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 200, 65, WIDTH - 130, 70, 160, "blue", "Music On");
+	const musicButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 200, 65, WIDTH - 130, 70, 160, "blue", "Music off");
 	musicButton.id = "musicButton";
-	musicButton.on = true;
+	musicButton.on = false;
 	musicButton.onClick = () => {
 		if(musicButton.on) {
 			audioSources.music.volume = 0;
-			musicButton.content = "Music Off";
+			musicButton.content = "Music off";
 		} else {
 			audioSources.music.volume = 1;
-			musicButton.content = "Music On";
+			musicButton.content = "Music on";
+			
+			//Start music in case didn't already
+			if(audioSources.music.paused) {
+				audioSources.music.play();
+			}
 		}
 		musicButton.on = !musicButton.on;
 	}
@@ -172,11 +177,6 @@ function startGame()
 		ctx.stroke();
 	}
 	elements.push(cannon);
-	
-	//Start music in case didn't already
-	if(audioSources.music.paused) {
-		audioSources.music.play();
-	}
 }
 
 function gameOver()

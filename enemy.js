@@ -45,11 +45,11 @@ function Enemy(position, angle)
 		if(checkArcAndRectCollusion(this.position[0], this.position[1], this.radius, player.position[0] - PLAYER_SIZE / 2, player.position[1] - PLAYER_SIZE / 2, PLAYER_SIZE, PLAYER_SIZE)) {
 			player.HP -= ENEMY_DAMAGE;
 			enemies.splice(enemies.indexOf(this), 1);
-			this.color = ["#ff3333", "#cc0000"];
+			this.color = ["#ff1a1a", "#b30000"];
 			this.update = () => {
 				this.radius *= 1.01;
 				this.opacity /= 1.002;
-				if(this.opacity < 0.05) {
+				if(this.opacity < 0.1) {
 					elements.splice(elements.indexOf(this), 1);
 				}
 			}
