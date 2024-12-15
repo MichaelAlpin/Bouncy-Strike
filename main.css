@@ -1,0 +1,23 @@
+@font-face {
+	font-family: 'Righteous';
+	src: url('./Righteous-Regular.ttf');
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: black;
+}
+
+.canvas {
+	background-color: #00ffff;
+}
+
+.hide {
+	display: none;
+}
