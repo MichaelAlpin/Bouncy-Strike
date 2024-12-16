@@ -137,3 +137,38 @@ function rotateVector(vector, angle)
 {
 	return [vector[0] * Math.cos(angle) - vector[1] * Math.sin(angle), vector[0] * Math.sin(angle) + vector[1] * Math.cos(angle)];
 }
+
+//Draw an arrow going from [x1,y1] to [x2,y2]
+function drawArrow(x1, y1, x2, y2)
+{
+	const angle = Math.atan2(y2 - y1, x2 - x1);
+	
+	ctx.beginPath();
+	ctx.moveTo(prop(x1), prop(y1));
+	ctx.lineTo(prop(x2), prop(y2));
+	ctx.moveTo(prop(x2 + Math.cos(angle + Math.PI + Math.PI / 6) * 20), prop(y2 + Math.sin(angle + Math.PI + Math.PI / 6) * 20));
+	ctx.lineTo(prop(x2), prop(y2));
+	ctx.lineTo(prop(x2 + Math.cos(angle + Math.PI - Math.PI / 6) * 20), prop(y2 + Math.sin(angle + Math.PI - Math.PI / 6) * 20));
+	ctx.stroke();
+}
+
+//Draw the velocity given if it's big enough
+function drawVelocity(position, velocity)
+{
+	ctx.lineWidth = prop(5);
+	
+	if(Math.abs(velocity[0]) > 0.1) {
+		ctx.strokeStyle = "#0099ff";
+		drawArrow(position[0], position[1], position[0] + velocity[0] * 25, position[1]);
+	}
+	
+	if(Math.abs(velocity[1]) > 0.1) {
+		ctx.strokeStyle = "#e6e600";
+		drawArrow(position[0], position[1], position[0], position[1] + velocity[1] * 25);
+	}
+	
+	if(velocity[0] ** 2 + velocity[1] ** 2 > 0.02) {
+		ctx.strokeStyle = "#ff6600";
+		drawArrow(position[0], position[1], position[0] + velocity[0] * 25, position[1] + velocity[1] * 25);
+	}
+}

@@ -1,6 +1,11 @@
 //Cannon constants
 const ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS = 1200;
 
+//Setting buttons constants
+const SETTING_BUTTONS_HEIGHT = 65;
+const SETTING_BUTTONS_MARGIN = 60;
+const SETTING_BUTTONS_WIDTH = [200, 240, 130];
+
 function summonMenuElement(type, x, y, width, height, targetX, targetY, pace, color, content)
 {
 	let element;
@@ -69,7 +74,7 @@ function summonMenu()
 	startButton.onClick = () => {
 		for(let i = 0; i < menuElements.length; i++) {
 			const element = menuElements[i];
-			if(element.id == "musicButton") continue;
+			if(element.id == "constantButton") continue;
 			element.onClick = () => {};
 			element.update = () => {
 				element.position[1] += element.position[1] / 140;
@@ -80,24 +85,27 @@ function summonMenu()
 	}
 	
 	//Documentation button
-	const documentationButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 320, 65, WIDTH / 2 - 190, HEIGHT / 2 + 130, 160, "blue", "Elastic Collision");
+	const documentationButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800,
+		320, 65, WIDTH / 2 - 190, HEIGHT / 2 + 130, 160, "blue", "Elastic Collision");
 	menuElements.push(documentationButton);
 	documentationButton.onClick = () => {
 		window.open("https://www.101computing.net/elastic-collision-in-a-pool-game/");
 	}
 	
 	//Source code button
-	const sourceCodeButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 320, 65, WIDTH / 2 + 190, HEIGHT / 2 + 130, 160, "blue", "Source Code");
+	const sourceCodeButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800,
+		320, 65, WIDTH / 2 + 190, HEIGHT / 2 + 130, 160, "blue", "Source Code");
 	menuElements.push(sourceCodeButton);
 	sourceCodeButton.onClick = () => {
 		window.open("https://github.com/MichaelAlpin/Bouncy-Strike");
 	}
 }
 
-function addMusicButton()
+function addSettingButtons()
 {
-	const musicButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 200, 65, WIDTH - 130, 70, 160, "blue", "Music off");
-	musicButton.id = "musicButton";
+	const musicButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800,
+		SETTING_BUTTONS_WIDTH[0], SETTING_BUTTONS_HEIGHT, WIDTH - SETTING_BUTTONS_WIDTH[0] / 2 - 50, SETTING_BUTTONS_MARGIN, 160, "blue", "Music off");
+	musicButton.id = "constantButton";
 	musicButton.on = false;
 	musicButton.onClick = () => {
 		if(musicButton.on) {
@@ -114,6 +122,17 @@ function addMusicButton()
 		}
 		musicButton.on = !musicButton.on;
 	}
+	const velocityButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800,
+		SETTING_BUTTONS_WIDTH[1], SETTING_BUTTONS_HEIGHT, WIDTH - SETTING_BUTTONS_WIDTH[1] / 2 - 50, 2 * SETTING_BUTTONS_MARGIN + SETTING_BUTTONS_HEIGHT / 2, 160, "blue", "Velocity on");
+	velocityButton.id = "constantButton";
+	velocityButton.onClick = () => {
+		if(velocityOn) {
+			velocityButton.content = "Velocity off";
+		} else {
+			velocityButton.content = "Velocity on";
+		}
+		velocityOn = !velocityOn;
+	}
 }
 
 function startGame()
@@ -126,13 +145,14 @@ function startGame()
 	player.score = 0;
 	
 	//Menu button
-	const menuButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800, 130, 65, WIDTH - 340, 70, 160, "blue", "Menu");
+	const menuButton = summonMenuElement("button", -400 + Math.random() * (WIDTH + 800), HEIGHT + 800,
+		SETTING_BUTTONS_WIDTH[2], SETTING_BUTTONS_HEIGHT, WIDTH - SETTING_BUTTONS_WIDTH[2] / 2 - 50, 2.5 * SETTING_BUTTONS_MARGIN + SETTING_BUTTONS_HEIGHT * 1.5, 160, "blue", "Menu");
 	menuButton.id = "menuButton";
 	menuButton.onClick = () => {
 		enemies.splice(0, enemies.length);
 		for(let i = 0; i < elements.length; i++) {
 			const element = elements[i];
-			if(element.id == "musicButton") continue;
+			if(element.id == "constantButton") continue;
 			element.onClick = () => {};
 			element.update = () => {
 				element.position[1] += element.position[1] / 140;
@@ -159,7 +179,8 @@ function startGame()
 		if(page == "game" && counter % Math.floor(gameTicksPerMillisecond * ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS) == 0) {
 			cannon.targetAngle = Math.random() * (Math.PI - 1) - (Math.PI - 1) / 2;
 		}
-		if(page == "game" && (counter - Math.floor(gameTicksPerMillisecond * ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS / 2)) % Math.floor(gameTicksPerMillisecond * ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS) == 0) {
+		if(page == "game" &&
+			(counter - Math.floor(gameTicksPerMillisecond * ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS / 2)) % Math.floor(gameTicksPerMillisecond * ENEMY_RELEASE_INTERVAL_IN_MILLISECONDS) == 0) {
 			enemies.push(new Enemy([cannon.position[0] + Math.cos(cannon.angle) * 50, cannon.position[1] + Math.sin(cannon.angle) * 50], cannon.angle));
 		}
 		cannon.angle += (cannon.targetAngle - cannon.angle) / 60;

@@ -10,9 +10,10 @@ const mouse = {
 };
 const keys = [];
 
-//Counter & page management
+//Counter & page & settings management
 let counter = 0;
 let page = "menu";
+let velocityOn = true;
 
 //Game constants
 const GROUND_HEIGHT = 100;
@@ -58,7 +59,7 @@ function onBodyLoad()
 	window.addEventListener("keyup", keyUp);
 	
 	//Initial action
-	addMusicButton();
+	addSettingButtons();
 	summonMenu();
 	
 	//Start update and animation
@@ -179,6 +180,14 @@ function animate()
 	ctx.fillStyle = "lime";
 	ctx.fillRect(prop(player.position[0] - PLAYER_SIZE / 2) + ctx.lineWidth, prop(player.position[1] - PLAYER_SIZE / 2 - 15) + ctx.lineWidth, Math.max((prop(PLAYER_SIZE) - ctx.lineWidth * 2) * player.HP / PLAYER_MAX_HP, 0), prop(13) - ctx.lineWidth * 2);
 	ctx.strokeRect(prop(player.position[0] - PLAYER_SIZE / 2) + ctx.lineWidth / 2, prop(player.position[1] - PLAYER_SIZE / 2 - 15) + ctx.lineWidth / 2, prop(PLAYER_SIZE) - ctx.lineWidth, prop(13) - ctx.lineWidth);
+	
+	//Draw the velocities of the player and the enemies
+	if(velocityOn) {
+		drawVelocity(player.position, player.velocity);
+		for(let i = 0; i < enemies.length; i++) {
+			drawVelocity(enemies[i].position, enemies[i].velocity);
+		}
+	}
 	
 	//Draw closest enemy target
 	if(player.closestEnemy !== undefined) {
